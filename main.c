@@ -28,30 +28,29 @@ int main(int argc , char* argv[]) {
     ssize_t n = read(STDIN_FILENO, &input[0], sizeof(input));
     printf("Read %d bytes:\n", n);
 
-    char* defFilename = "stimuli_out/stimuli_out.txt";
+    FILE* file = 0;
 
-    /* get stimuli output file size */
-    struct stat st;
-    stat(defFilename, &st);
+    if (argc > 1 && strcmp(argv[1], "-s") == 0) {
+        char* defFilename = "stimuli_head.txt";
 
-    printf("File size is: %d\n", st.st_size);
-    
-    if (st.st_size > 16*1024*1024) {
+        /* get stimuli output file size */
+        struct stat st;
+        stat(defFilename, &st);
+        
+        if (st.st_size > 16*1024*1024) {
 
-        int iFile = 0;
-        char filename[128];
-        memset(&filename[0], 0, sizeof(filename));
+            int iFile = 0;
+            char filename[128];
+            memset(&filename[0], 0, sizeof(filename));
 
-        while (strlen(&filename[0]) == 0 || access(&filename[0], F_OK) != -1) {
-            snprintf(&filename[0], sizeof(filename),
-                    "stimuli_out/stimuli_out_%08d.txt", ++iFile);
-
-            printf("%s -> %d\n", &filename[0], access(&filename[0], F_OK));
+            while (strlen(&filename[0]) == 0 || access(&filename[0], F_OK) != -1) {
+                snprintf(&filename[0], sizeof(filename),
+                        "stimuli_%08d.txt", ++iFile);
+            }
+            rename(defFilename, &filename[0]);
         }
-        rename(defFilename, &filename[0]);
+        file = fopen(defFilename, "a");
     }
-
-    FILE* file = fopen(defFilename, "a");
   
 
     if (n > 0) {
@@ -66,24 +65,14 @@ int main(int argc , char* argv[]) {
         n = strlen(&hex[0]);
         hex[n] = '\n';
 
-        fwrite(hex, 1, n + 1, file);
-
-        /*
-        char syscall[1024*10];
-
-        snprintf(&syscall[0], sizeof(syscall) - 1,
-                "/home/walz/Code/the-man-tools/apps/stimulate_servers/stimulate_servers 0x%s", &hex[0]);
-
-        int retval = system(&syscall[0]);
-
-        printf("program returned: %i\n", retval);
-        if (retval != 0) {
-            abort();
+        if (file != 0) {
+            fwrite(hex, 1, n + 1, file);
         }
-        */
     }
 
-    fclose(file);
+    if (file != 0) {
+        fclose(file);
+    }
 
     return 0;
 }
