@@ -2,7 +2,9 @@ ifndef CC
     CC=gcc
 endif
 
-MATRIXSSL_ROOT:=/home/walz/Code/matrixssl-3.8.4-afl
+ifndef MATRIXSSL_ROOT
+    $(error Please set MATRIXSSL_ROOT)
+endif
 
 include $(MATRIXSSL_ROOT)/common.mk
 
