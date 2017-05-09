@@ -20,5 +20,5 @@ all:
 	$(CC) main.c $(STATIC) $(LDFLAGS) $(CFLAGS) -o self-matrixssl
 
 clean:
-	rm $(OBJ_DIR)/*.o
+	rm self-matrixssl
 
