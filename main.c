@@ -8,9 +8,9 @@
 
 #include "matrixssl/matrixsslApi.h"
 
-const static char certpath[] = "/home/walz/Code/the-man-tools/tls-diff-fuzzing/macros/cert.pem";
-const static char keypath[] = "/home/walz/Code/the-man-tools/tls-diff-fuzzing/macros/key.pem";
-const static char capath[] = "/home/walz/Code/the-man-tools/tls-diff-fuzzing/macros/cacert.pem";
+const static char certpath[] = "cert.pem";
+const static char keypath[] = "key.pem";
+const static char capath[] = "cacert.pem";
 const static char password[] = "";
 
 
