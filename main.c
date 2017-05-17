@@ -24,7 +24,7 @@ void tohex(uint8_t* str, uint8_t* data, size_t len);
 int main(int argc , char* argv[]) {
 
     /* input */
-    uint8_t input[1024*10];
+    uint8_t input[1024*16];
     ssize_t n = read(STDIN_FILENO, &input[0], sizeof(input));
     printf("Read %d bytes:\n", n);
 
@@ -59,13 +59,11 @@ int main(int argc , char* argv[]) {
         printf("=================\n");
         stimulateServer(input, (size_t)n);
 
-        uint8_t hex[1024*10];
-        tohex(&hex[0], &input[0], n);
-
-        n = strlen(&hex[0]);
-        hex[n] = '\n';
-
         if (file != 0) {
+            uint8_t hex[1024*16];
+            tohex(&hex[0], &input[0], n);
+            n = strlen(&hex[0]);
+            hex[n] = '\n';
             fwrite(hex, 1, n + 1, file);
         }
     }
