@@ -151,6 +151,11 @@ void stimulateServer(uint8_t* data, size_t len) {
     }
     printf("matrixSslGetReadbuf(...) returned %i\n", lbuf);
 
+    if ((int)len > lbuf) {
+        printf("Insufficient buffer capacity. Exiting\n", rc);
+        return;
+    }
+
     memcpy(buf, data, len);
 
     if ((rc = matrixSslReceivedData(ssl, len, &buf, (uint32*)&lbuf)) < 0) {
